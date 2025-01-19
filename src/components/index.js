@@ -2,9 +2,9 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import CalculatorIcon from '../assets/images/icon-calculator.svg';
-import MortgageTypeSelector from './MortgageTypeSelector';
 import InputField from './InputField';
 import ResultsPanel from './ResultsPanel';
+import MortgageTypeSelector from './MortgageTypeSelector';
 
 const mortgageTypeList = ['Repayment', 'Interest Only'];
 
@@ -104,7 +104,10 @@ const MortgageCalculator = () => {
                 activeField={activeField}
                 name={'amount'}
                 value={amount}
-                onChange={setAmount}
+                onChange={(val) => {
+                  setAmount(val.replace(/[^0-9.]/g, ''));
+                  if (errors.amount) setErrors(prev => ({ ...prev, amount: null }));
+                }}
                 setActiveField={setActiveField}
                 errors={errors}
                 startIcon={'£'}
@@ -118,7 +121,10 @@ const MortgageCalculator = () => {
                   activeField={activeField}
                   name={'term'}
                   value={term}
-                  onChange={setTerm}
+                  onChange={(val) => {
+                    setTerm(val.replace(/[^0-9.]/g, ''));
+                    if (errors.term) setErrors(prev => ({ ...prev, term: null }));
+                  }}
                   setActiveField={setActiveField}
                   errors={errors}
                   endIcon={'years'}
@@ -130,7 +136,10 @@ const MortgageCalculator = () => {
                   activeField={activeField}
                   name={'rate'}
                   value={rate}
-                  onChange={setRate}
+                  onChange={(val) => {
+                    setRate(val.replace(/[^0-9.]/g, ''));
+                    if (errors.rate) setErrors(prev => ({ ...prev, rate: null }));
+                  }}
                   setActiveField={setActiveField}
                   errors={errors}
                   endIcon={'%'}
@@ -140,7 +149,10 @@ const MortgageCalculator = () => {
               {/* Mortgage Type */}
               <MortgageTypeSelector
                 mortgageType={mortgageType}
-                setMortgageType={setMortgageType}
+                onClickType={(type) => {
+                  setMortgageType(type);
+                  if (errors.mortgageType) setErrors(prev => ({ ...prev, mortgageType: null }));
+                }}
                 errors={errors}
                 mortgageTypeList={mortgageTypeList}
               />
